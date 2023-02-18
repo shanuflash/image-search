@@ -10,6 +10,7 @@
     display: flex;
     align-items: center;
 }
+
 .input{
     font-size: 1.5rem;
     border:none;
@@ -40,12 +41,17 @@
 }
 .image-container{
     padding: 2rem;
-    overflow: scroll;
-    height: 80vh;
+    /* overflow: scroll; */
+    min-height: 79.5vh;
+    display: flex;
     align-items: center;
     justify-content: center;
-
+}
+.images{
+    align-items: center;
+    justify-content: center;
     display: flex;
+
     flex-wrap: wrap;
     gap: 2rem;
 }
@@ -67,7 +73,8 @@
 .loading {
     display: flex;
     flex-direction: column;
-    align-items: center;
+        align-items: center;
+    justify-content: center;
     font-size: 2rem;
     gap:1rem;
 }

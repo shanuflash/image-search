@@ -4,10 +4,21 @@ import UseAnimations from "react-useanimations";
 import loading2 from "react-useanimations/lib/loading2";
 import { GoSearch } from "react-icons/go";
 import { DataContext } from "./context/DataProvider";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function App() {
-  const { handleSearch, Data, Loading, Query, setQuery } =
-    useContext(DataContext);
+  const {
+    handleSearch,
+    Data,
+    Loading,
+    Query,
+    setQuery,
+    imagesLoaded,
+    setImagesLoaded,
+    totalImages,
+    setTotalImages,
+    handleImageLoad,
+  } = useContext(DataContext);
 
   return (
     <div className="App">
@@ -38,11 +49,10 @@ function App() {
               <>
                 {Data.photos?.map((image, i) => (
                   <img
-                    className="image"
+                    onLoad={handleImageLoad}
+                    className={`image ${imagesLoaded !== 50 && "block"}`}
                     loading="lazy"
                     src={image.src.small}
-                    // height="100px"
-                    // width="150vw"
                     key={image.id}
                     title={image.alt}
                     alt={image.alt}

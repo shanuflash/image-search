@@ -7,9 +7,16 @@ export function DataProvider({ children }) {
   const [Data, setData] = useState({});
   const [Query, setQuery] = useState("");
   const [Loading, setLoading] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(0);
+  const [totalImages, setTotalImages] = useState(50);
+
+  const handleImageLoad = () => {
+    setImagesLoaded((prevLoaded) => prevLoaded + 1);
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
+    setImagesLoaded(0);
     if (Query) {
       setLoading(true);
       client.photos
@@ -25,7 +32,18 @@ export function DataProvider({ children }) {
 
   return (
     <DataContext.Provider
-      value={{ handleSearch, Data, Loading, Query, setQuery }}
+      value={{
+        handleSearch,
+        Data,
+        Loading,
+        Query,
+        setQuery,
+        imagesLoaded,
+        setImagesLoaded,
+        totalImages,
+        setTotalImages,
+        handleImageLoad,
+      }}
     >
       {children}
     </DataContext.Provider>

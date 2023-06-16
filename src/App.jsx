@@ -1,24 +1,35 @@
-import { useState, useContext } from "react";
-import "./App.css";
+import { useState } from "react";
 import UseAnimations from "react-useanimations";
 import loading2 from "react-useanimations/lib/loading2";
 import { GoSearch } from "react-icons/go";
-import { DataContext } from "./context/DataProvider";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+import { client } from "./pexels";
+import "./App.css";
 
 function App() {
-  const {
-    handleSearch,
-    Data,
-    Loading,
-    Query,
-    setQuery,
-    imagesLoaded,
-    setImagesLoaded,
-    totalImages,
-    setTotalImages,
-    handleImageLoad,
-  } = useContext(DataContext);
+  const [Data, setData] = useState({});
+  const [Query, setQuery] = useState("");
+  const [Loading, setLoading] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(0);
+
+  const handleImageLoad = () => {
+    setImagesLoaded((prevLoaded) => prevLoaded + 1);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setImagesLoaded(0);
+    if (Query) {
+      setLoading(true);
+      client.photos
+        .search({ query: Query, page: 1, per_page: 50 })
+        .then((photos) => {
+          setData(...[photos]);
+          setLoading(false);
+        });
+    } else {
+      setData({});
+    }
+  };
 
   return (
     <div className="App">
@@ -29,7 +40,7 @@ function App() {
             className="input"
             placeholder="Type here"
             value={Query}
-            onChange={(e) => setQuery((prev) => e.target.value)}
+            onChange={(e) => setQuery(() => e.target.value)}
           />
           <button className="button" type="submit">
             Search
@@ -47,7 +58,7 @@ function App() {
               </div>
             ) : (
               <>
-                {Data.photos?.map((image, i) => (
+                {Data.photos?.map((image) => (
                   <img
                     onLoad={handleImageLoad}
                     className={`image ${imagesLoaded !== 50 && "block"}`}
